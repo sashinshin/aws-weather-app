@@ -1,0 +1,9 @@
+*{
+    background-color: aliceblue;
+    margin-top: 20px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
