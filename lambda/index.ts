@@ -1,34 +1,21 @@
-import axios from 'axios';
-import { SSM } from "aws-sdk";
+import { AWSError, S3 } from "aws-sdk";
+import { getEnvVar } from "../common-utils/index"
+import { apiCall, getDate, processData } from "./utils"
 
-export const handler = async (data: unknown): Promise<unknown> => {
+export const handler = async (): Promise<S3.PutObjectOutput | AWSError> => {
     //event bridge triggered lambda
 
-
-    
-    
-    // get api key
-    const ssm = new SSM();
-    const ssmRes = (await ssm.getParameter({Name: "/apikeys/visualcrossing/weather-api"}).promise()).Parameter?.Value;
-    
-    
-    console.log(ssmRes);
-    
-    // make api call to weather api
-    // yyyy-MM-dd
-    const endDate = "2022-01-01";
-    const startDate = "/2022-01-01";
-    const date = endDate + startDate;
-
-    const apiKey = ""
     const location = 'Stockholm'
-    const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${date}?unitGroup=metric&key=${apiKey}&contentType=json`
-    // const res = await axios.get(url);
+    const date = getDate();
 
+    const data = await apiCall(date, location);
 
-    // clean data, create filename
-    // write to s3
+    const param = {
+        Bucket: getEnvVar("WEATHER_BUCKET_ARN"),
+        Key: `data/${location.toLowerCase()}/date.json`,
+        Body: processData(data, date, location),
+        ContentType: "application/json"
+    }
 
-    return data;
-
+    return await new S3().putObject(param).promise();
 }

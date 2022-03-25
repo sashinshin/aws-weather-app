@@ -5,7 +5,7 @@ import { Construct } from 'constructs';
 import { join } from 'path'
 import { PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 
-export const addRetrieveWeatherDataLambda = (stack: Construct, weatherBucketArn: string): cdk.aws_lambda_nodejs.NodejsFunction => {
+export const addRetrieveWeatherLambda = (stack: Construct, weatherBucketArn: string): cdk.aws_lambda_nodejs.NodejsFunction => {
     const lambda = new NodejsFunction(stack, "RetrieveWeatherDataLambda", {
         description: "Lambda that retrieves weather data",
         handler: "handler",
@@ -29,7 +29,6 @@ export const addRetrieveWeatherDataLambda = (stack: Construct, weatherBucketArn:
 
         ]
     });
-
 
     return lambda;
 };
