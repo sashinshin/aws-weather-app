@@ -25,6 +25,5 @@ export class AwsWeatherAppStack extends cdk.Stack {
 
     addRetrieveWeatherDataLambda(this, weatherBucket.bucketArn);
 
-
   }
 }
