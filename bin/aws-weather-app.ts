@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { AwsWeatherAppStack } from '../lib/aws-weather-app-stack';
+import { AwsWeatherAppStack } from '../lib/stack';
 
 const app = new cdk.App();
 new AwsWeatherAppStack(app, 'AwsWeatherAppStack', {
