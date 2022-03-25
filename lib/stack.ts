@@ -10,7 +10,7 @@ export class AwsWeatherAppStack extends cdk.Stack {
 
     const pipeline = new CodePipeline(this, 'WeatherAppPipeline', {
       pipelineName: 'WeatherAppPipeline',
-      dockerEnabledForSelfMutation: true,
+      dockerEnabledForSynth: true,
       synth: new ShellStep('Synth', {
         input: CodePipelineSource.gitHub('sashinshin/aws-weather-app', 'main'),
         commands: [
