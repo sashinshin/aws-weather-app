@@ -6,7 +6,7 @@ export const getDate = (): string => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     return yesterday.toISOString().substring(0, 10);
-}
+};
 
 const getApiKey = async (): Promise<string> => {
     const ssm = new SSM();
@@ -15,7 +15,7 @@ const getApiKey = async (): Promise<string> => {
         throw new Error("Api key couldn't be retrieved");
     }
     return apiKey;
-}
+};
 
 export const getWeatherData = async (date: string, location: string): Promise<weatherDays> => {
     const apiKey = await getApiKey();
@@ -24,19 +24,20 @@ export const getWeatherData = async (date: string, location: string): Promise<we
     return res.data.days[0]
 };
 
-export const processData = (data: weatherDays, date: string, location: string) => (JSON.stringify({
-    date,
-    location,
-    tempmax: data.tempmax,
-    tempmin: data.tempmin,
-    temp: data.tempmin,
-    feelslike: data.feelslike,
-    feelslikemin: data.feelslikemin,
-    feelslikemax: data.feelslikemax,
-    sunrise: data.sunrise,
-    sunset: data.sunset,
-    snow: data.snow,
-    conditions: data.conditions,
-    description: data.description,
-}));
+export const processData = (data: weatherDays, date: string, location: string) => (
+    JSON.stringify({
+        date,
+        location,
+        tempmax: data.tempmax,
+        tempmin: data.tempmin,
+        temp: data.tempmin,
+        feelslike: data.feelslike,
+        feelslikemin: data.feelslikemin,
+        feelslikemax: data.feelslikemax,
+        sunrise: data.sunrise,
+        sunset: data.sunset,
+        snow: data.snow,
+        conditions: data.conditions,
+        description: data.description,
+    }));
 

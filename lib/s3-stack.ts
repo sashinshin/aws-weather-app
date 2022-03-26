@@ -3,15 +3,12 @@ import * as s3Deploy from "aws-cdk-lib/aws-s3-deployment"
 import { Construct } from 'constructs';
 import { join } from 'path';
 
-export const addWeatherBucket = (stack: Construct): s3.Bucket => {
-    const weatherS3 = new s3.Bucket(stack, 'WeatherS3', {
+export const addWeatherBucket = (stack: Construct): s3.Bucket => (
+    new s3.Bucket(stack, 'WeatherS3', {
         bucketName: "weather-data-sashin",
-    });
+    }));
 
-    return weatherS3;
-};
-
-export const addStaticPageBucket =  (stack: Construct): s3.Bucket => {
+export const addStaticPageBucket = (stack: Construct): s3.Bucket => {
     const staticPageS3 = new s3.Bucket(stack, 'StaticPageS3', {
         bucketName: "weather-app-static-page-sashin",
         publicReadAccess: true,
