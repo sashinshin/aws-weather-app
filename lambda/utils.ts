@@ -17,7 +17,7 @@ const getApiKey = async (): Promise<string> => {
     return apiKey;
 }
 
-export const apiCall = async (date: string, location: string): Promise<weatherDays> => {
+export const getWeatherData = async (date: string, location: string): Promise<weatherDays> => {
     const apiKey = await getApiKey();
     const endpoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${date}?unitGroup=metric&include=days&key=${apiKey}&contentType=json`
     const res = await axios.get<weatherResponse>(endpoint);
