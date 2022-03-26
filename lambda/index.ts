@@ -11,11 +11,14 @@ export const handler = async (): Promise<S3.PutObjectOutput | AWSError> => {
     const data = await apiCall(date, location);
 
     const param = {
-        Bucket: getEnvVar("WEATHER_BUCKET_ARN"),
+        Bucket: getEnvVar("WEATHER_BUCKET_NAME"),
         Key: `data/${location.toLowerCase()}/date.json`,
         Body: processData(data, date, location),
         ContentType: "application/json"
     }
-
-    return await new S3().putObject(param).promise();
+    console.log(param);
+    const res = await new S3().putObject(param).promise();
+    console.log(res);
+    
+    return res
 }

@@ -26,7 +26,7 @@ export class AwsWeatherAppStack extends cdk.Stack {
     const weatherBucket = addWeatherBucket(this);
     addStaticPageBucket(this);
 
-    const retrieveWeatherLambda = addRetrieveWeatherLambda(this, weatherBucket.bucketArn);
+    const retrieveWeatherLambda = addRetrieveWeatherLambda(this, weatherBucket);
 
     const eventBridge = new Rule(this, "GetWeatherDataSchedule", {
       schedule: Schedule.cron({minute: "0", hour: "3", weekDay: "*"})
