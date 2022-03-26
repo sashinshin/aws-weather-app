@@ -1,20 +1,22 @@
-import { AWSError, S3 } from "aws-sdk";
-import { getEnvVar } from "../../common-utils/index"
+import { S3 } from "aws-sdk";
+import { getEnvVar } from "../../common-utils/index";
 
+const s3 = new S3();
 
-export const handler = async (): Promise<S3.GetObjectOutput | AWSError | unknown> => {
-
+const getKeys = async (location: string): Promise<string[]> => {
     const listParam = {
         Bucket: getEnvVar("WEATHER_BUCKET_NAME"),
-        Prefix: "data/stockholm/"
+        Prefix: `data/${location}/`
     }
-    const s3 = new S3();
-    const objectList =  await s3.listObjectsV2(listParam).promise();
+    const objectList = await s3.listObjectsV2(listParam).promise();
     const keys = objectList.Contents?.map((obj) => obj.Key ? obj.Key : "");
     if (!keys) {
         throw new Error("failed");
     }
+    return keys;
+};
 
+const getWeatherData = async (keys: string[]): Promise<(string | undefined)[]> => {
     const promiseList = keys.map((key) => {
         const param = {
             Bucket: getEnvVar("WEATHER_BUCKET_NAME"),
@@ -22,13 +24,18 @@ export const handler = async (): Promise<S3.GetObjectOutput | AWSError | unknown
         }
         return s3.getObject(param).promise();
     });
-    const res = await Promise.all(promiseList).then(res =>res)
-    const res2 = res.map(res => res.Body?.toString('utf-8') )
-    console.log(res2);
-    
-    
-    // const res = await Promise.all(promiseList).then(res => res);
-    // console.log(res);
-    
-    return res;
+    const res = await Promise.all(promiseList).then(res => res);
+    return res.map(res => res.Body?.toString('utf-8'));
+};
+
+interface inputEvent {
+    body: {
+        location: string;
+    }
+}
+export const handler = async (event: inputEvent): Promise<(string | undefined)[]> => {
+    const keys = await getKeys(event.body.location);
+    const weatherData = getWeatherData(keys);
+
+    return weatherData;
 };
