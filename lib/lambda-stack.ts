@@ -43,7 +43,7 @@ export const addAccessWeatherLambda = (stack: Construct, weatherBucket: cdk.aws_
         initialPolicy: [
             new PolicyStatement({
                 effect: Effect.ALLOW,
-                actions: ["s3:ListBucket"],
+                actions: ["s3:*"],
                 resources: [`${weatherBucket.bucketArn}/*`]
             }),
         ]
