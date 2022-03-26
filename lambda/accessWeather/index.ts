@@ -22,7 +22,7 @@ export const handler = async (): Promise<S3.GetObjectOutput | AWSError | unknown
         }
         return s3.getObject(param).promise();
     });
-    const res = Promise.all(promiseList).then(res => res);
+    const res = await Promise.all(promiseList).then(res => res);
     console.log(res);
     
     return res;
