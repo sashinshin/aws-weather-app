@@ -22,8 +22,25 @@ export const handler = async (): Promise<S3.GetObjectOutput | AWSError | unknown
         }
         return s3.getObject(param).promise();
     });
-    const res = await Promise.all(promiseList).then(res => res);
+    const res = promiseList.map(async (element) => await element);
     console.log(res);
+    
+    const t = await s3.getObject( {
+        Bucket: getEnvVar("WEATHER_BUCKET_NAME"),
+        Key: keys[0],
+    }).promise()
+
+    const t2 = await s3.getObject( {
+        Bucket: getEnvVar("WEATHER_BUCKET_NAME"),
+        Key: keys[1],
+    }).promise()
+
+    console.log(t);
+    console.log(t2);
+    
+    
+    // const res = await Promise.all(promiseList).then(res => res);
+    // console.log(res);
     
     return res;
 };
