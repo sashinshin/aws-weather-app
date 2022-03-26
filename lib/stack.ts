@@ -35,8 +35,11 @@ export class AwsWeatherAppStack extends cdk.Stack {
       handler: accessWeatherLambda,
       proxy: false,
     });
-    const weather = api.root.addResource("weather/{location}");
+    const weather = api.root.addResource("weather");
     weather.addMethod("GET");
+
+    const location = weather.addResource("{location}");
+    location.addMethod("GET")
 
     const eventBridge = new Rule(this, "GetWeatherDataSchedule", {
       schedule: Schedule.cron({ minute: "0", hour: "3", weekDay: "*" })
