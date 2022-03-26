@@ -32,7 +32,8 @@ export class AwsWeatherAppStack extends cdk.Stack {
     const accessWeatherLambda = addAccessWeatherLambda(this, weatherBucket);
 
     const api = new LambdaRestApi(this, "weather-api", {
-      handler: accessWeatherLambda
+      handler: accessWeatherLambda,
+      proxy: false,
     });
     const weather = api.root.addResource("weather/{location}");
     weather.addMethod("GET");
