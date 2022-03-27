@@ -31,7 +31,7 @@ const getWeatherData = async (keys: string[]): Promise<(string | undefined)[]> =
 
 export const handler = async (): Promise<object> => {
     const keys = await getKeys();
-    const weatherData = getWeatherData(keys);
+    const weatherData = await getWeatherData(keys);
     const response = {
         statusCode: 200,
         body: JSON.stringify(weatherData),
