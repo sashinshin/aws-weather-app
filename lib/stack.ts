@@ -34,7 +34,6 @@ export class AwsWeatherAppStack extends cdk.Stack {
     const api = new RestApi(this, "weather-api");
     api.root
       .resourceForPath("weather")
-      .resourceForPath("{location}")
       .addMethod("GET", new LambdaIntegration(accessWeatherLambda))
 
 

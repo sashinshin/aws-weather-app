@@ -3,7 +3,8 @@ import { getEnvVar } from "../../common-utils/index";
 
 const s3 = new S3();
 
-const getKeys = async (location: string): Promise<string[]> => {
+const getKeys = async (): Promise<string[]> => {
+    const location = "stockholm";
     const listParam = {
         Bucket: getEnvVar("WEATHER_BUCKET_NAME"),
         Prefix: `data/${location}/`
@@ -28,13 +29,8 @@ const getWeatherData = async (keys: string[]): Promise<(string | undefined)[]> =
     return res.map(res => res.Body?.toString('utf-8'));
 };
 
-interface inputEvent {
-    body: {
-        location: string;
-    }
-}
-export const handler = async (event: inputEvent): Promise<(string | undefined)[]> => {
-    const keys = await getKeys(event.body.location);
+export const handler = async (): Promise<(string | undefined)[]> => {
+    const keys = await getKeys();
     const weatherData = getWeatherData(keys);
 
     return weatherData;
