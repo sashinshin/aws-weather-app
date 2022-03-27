@@ -17,7 +17,7 @@ const getKeys = async (): Promise<string[]> => {
     return keys;
 };
 
-const getWeatherData = async (keys: string[]): Promise<(string | undefined)[]> => {
+const getWeatherData = async (keys: string[]): Promise<object> => {
     const promiseList = keys.map((key) => {
         const param = {
             Bucket: getEnvVar("WEATHER_BUCKET_NAME"),
@@ -26,10 +26,10 @@ const getWeatherData = async (keys: string[]): Promise<(string | undefined)[]> =
         return s3.getObject(param).promise();
     });
     const res = await Promise.all(promiseList).then(res => res);
-    return res.map(res => res.Body?.toString('utf-8'));
+    return { Body: res.map(res => res.Body?.toString('utf-8')) }
 };
 
-export const handler = async (): Promise<(string | undefined)[]> => {
+export const handler = async (): Promise<object> => {
     const keys = await getKeys();
     const weatherData = getWeatherData(keys);
 
