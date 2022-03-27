@@ -5,7 +5,7 @@ import { addLambdaPermission, LambdaFunction } from 'aws-cdk-lib/aws-events-targ
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';;
 import { addWeatherBucket, addStaticPageBucket } from './s3-stack';
 import { addRetrieveWeatherLambda, addAccessWeatherLambda } from './lambda-stack';
-import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { RestApi, LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 
 
 export class AwsWeatherAppStack extends cdk.Stack {
@@ -31,15 +31,12 @@ export class AwsWeatherAppStack extends cdk.Stack {
     const retrieveWeatherLambda = addRetrieveWeatherLambda(this, weatherBucket);
     const accessWeatherLambda = addAccessWeatherLambda(this, weatherBucket);
 
-    const api = new LambdaRestApi(this, "weather-api", {
-      handler: accessWeatherLambda,
-      proxy: false,
-    });
-    const weather = api.root.addResource("weather");
-    weather.addMethod("GET");
+    const api = new RestApi(this, "weather-api");
+    api.root
+      .resourceForPath("weather")
+      .resourceForPath("{location}")
+      .addMethod("GET", new LambdaIntegration(accessWeatherLambda))
 
-    const location = weather.addResource("{location}");
-    location.addMethod("GET")
 
     const eventBridge = new Rule(this, "GetWeatherDataSchedule", {
       schedule: Schedule.cron({ minute: "0", hour: "3", weekDay: "*" })
