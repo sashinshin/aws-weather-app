@@ -35,7 +35,11 @@ export const handler = async (): Promise<object> => {
     const response = {
         statusCode: 200,
         body: JSON.stringify(weatherData),
-        isBase64Encoded: false
+        isBase64Encoded: false,
+        headers: {
+            'Access-Control-Allow-Method': "GET",
+            'Access-Control-Allow-Origin': "*"
+        }
     }
 
     return response;

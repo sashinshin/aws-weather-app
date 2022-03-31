@@ -3,8 +3,8 @@ import { Construct } from 'constructs';
 import { Schedule, Rule } from 'aws-cdk-lib/aws-events';
 import { addLambdaPermission, LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';;
-import { addWeatherBucket, addStaticPageBucket } from './s3-stack';
-import { addRetrieveWeatherLambda, addAccessWeatherLambda } from './lambda-stack';
+import { addWeatherBucket, addStaticPageBucket } from './s3-resources';
+import { addRetrieveWeatherLambda, addAccessWeatherLambda } from './lambda-resources';
 import { RestApi, LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 
 
