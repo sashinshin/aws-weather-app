@@ -1,17 +1,20 @@
 const button = document.getElementById("button");
 
-const endpoint = "https://2oxnxxfh16.execute-api.eu-west-1.amazonaws.com/prod/weather"
 button.addEventListener("click", async () => {
-    const res = await fetch(endpoint, {
-        method: "GET",
-        headers: {
+    const endpoint = "https://2oxnxxfh16.execute-api.eu-west-1.amazonaws.com/prod/weather"
+    const res = await fetch(endpoint).then(res => res.json()).then(data => data);
 
-        }
-    })
-    const parsed = JSON.parse(res.body);
-    console.log(res);
-    console.log("hello");
-    const data = parsed.map(day => day.temp)
-    console.log(data);
+    const list = await res.map(t => JSON.parse(t))
+    console.log(list);
+
+    const dataContainer = document.getElementById("data-container");
+    list.forEach(element => {
+        const day = document.createElement("li")
+        const node = document.createTextNode(`${element.date}: ${element.description} It was ${element.temp}, and felt like ${element.feelslike}`);
+        day.appendChild(node)
+        dataContainer.appendChild(day)
+    });
+
+    button.remove();
 });
 

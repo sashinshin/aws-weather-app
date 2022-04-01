@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test accessWeather lambda 1`] = `
+Object {
+  "body": "[null,null]",
+  "headers": Object {
+    "Access-Control-Allow-Method": "GET",
+    "Access-Control-Allow-Origin": "*",
+  },
+  "isBase64Encoded": false,
+  "statusCode": 200,
+}
+`;
+
+exports[`Test retrieveWeather lambda 1`] = `
+Object {
+  "Etag": "put-object-mock-response",
+}
+`;
